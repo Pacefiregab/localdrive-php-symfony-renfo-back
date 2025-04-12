@@ -1,0 +1,49 @@
+@startuml
+title Modélisation du domaine – LocaDrive
+
+enum StatutReservationEnum {
+  CART
+  PAID
+  CANCELLED
+}
+
+class User {
+  +id: int
+  +email: string
+  +password: string
+  +roles: string[]
+  +prenom: string
+  +nom: string
+  +dateObtentionPermis: date
+}
+
+class Vehicule {
+  +id: int
+  +marque: string
+  +modele: string
+  +prixJournalier: float
+}
+
+class Reservation {
+  +id: int
+  +dateCreation: date
+  +dateDebut: date
+  +dateFin: date
+  +statut: StatutReservationEnum
+  +assurance: bool
+  +modePaiement: string
+}
+
+class ReservationItem {
+  +id: int
+}
+
+User "1" -- "0..*" Reservation : possède
+Reservation "1" -- "0..*" ReservationItem : contient
+ReservationItem "*" --> "1" Vehicule : référence
+ReservationItem "*" --> "1" Reservation : appartient
+Vehicule "1" -- "0..*" ReservationItem : est utilisé
+
+Reservation --> StatutReservationEnum
+
+@enduml
